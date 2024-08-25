@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Your Expense Tracker</h1>
+        <p>Manage your expenses effortlessly and stay on top of your finances!</p>
+        <div class="button-container">
+            <a href="{{ url_for('add_expense') }}" class="btn btn-primary">Add New Expense</a>
+            <a href="#" id="view-expenses-btn" class="btn btn-secondary">View Expenses</a>
+        </div>
+        <ul id="expenses-list" style="display: none;">
+            {% for expense in expenses %}
+                <li>
+                    {{ expense.description }} - ${{ expense.amount }} [{{ expense.category }}]
+                    <a href="{{ url_for('edit_expense', index=loop.index0) }}" class="small-btn">Edit</a>
+                    <a href="{{ url_for('view_expense', index=loop.index0) }}" class="small-btn">View</a>
+                    <a href="{{ url_for('delete_expense', index=loop.index0) }}" class="small-btn delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        document.getElementById('view-expenses-btn').addEventListener('click', function() {
+            var expensesList = document.getElementById('expenses-list');
+            if (expensesList.style.display === "none") {
+                expensesList.style.display = "block";
+                this.textContent = "Hide Expenses";
+            } else {
+                expensesList.style.display = "none";
+                this.textContent = "View Expenses";
+            }
+        });
+    </script>
+</body>
+</html>
